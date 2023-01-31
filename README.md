@@ -58,7 +58,7 @@ npm run dev
 - 群聊，记得把机器人名称改成你自己微信号的名称，然后添加对应群聊的名称到白名单中，这样就可以自动回复群聊消息了。
 - 私聊，记得把需要自动回复的好友名称添加到白名单中，这样就可以自动回复私聊消息了。
 
-文件是 👉🏻 [sendMessage.js](./src/sendMessage.js)
+文件是 👉🏻 [config.js](./config.js)
 
 ![](https://assets.fedtop.com/picbed/202212110942315.png)
 
@@ -79,3 +79,8 @@ $ docker build . -t wechat-bot
 
 $ docker run -d --rm --name wechat-bot -v $(pwd)/config.js:/app/config.js -v $(pwd)/.env:/app/.env wechat-bot
 ```
+##Ubuntu一键安装脚本
+'''sh
+curl https://raw.githubusercontent.com/jackyma001/wechat-bot/master/install.sh | bash
+
+'''
