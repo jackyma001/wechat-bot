@@ -52,7 +52,7 @@ async function onMessage(msg) {
 // 初始化机器人
 export const bot = WechatyBuilder.build({
   name: 'WechatEveryDay',
-  puppet: 'wechaty-puppet-wechat', // 如果有token，记得更换对应的puppet
+  puppet: 'wechaty-puppet-wechat4u', // 如果有token，记得更换对应的puppet
   puppetOptions: {
     uos: true,
   },
