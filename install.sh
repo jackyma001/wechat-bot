@@ -16,34 +16,6 @@ cd wechat-bot
 
 cp .env.example .env
 
-# Ask the user for API key
-echo "Enter your API key:"
-read api_key
-
-# Replace the API key in .env
-sed -i "s/OPENAI_API_KEY=.*/OPENAI_API_KEY='$api_key'/" .env
-
-# Ask the user for bot name
-echo "Enter your bot name:"
-read bot_name
-
-# Replace the bot name in config.js
-sed -i "s/export const botName = .*/export const botName = '$bot_name'/" config.js
-
-# Ask the user for room white list
-echo "Enter the room white list, separated by commas (e.g. 'A','B'):"
-read room_white_list
-
-# Replace the room white list in config.js
-sed -i "s/export const roomWhiteList = .*/export const roomWhiteList = [$room_white_list]/" config.js
-
-# Ask the user for alias white list
-echo "Enter the alias white list, separated by commas (e.g. 'A','B'):"
-read alias_white_list
-
-# Replace the alias white list in config.js
-sed -i "s/export const aliasWhiteList = .*/export const aliasWhiteList = [$alias_white_list]/" config.js
-
 # Install the dependencies
 echo "Installing the dependencies..."
 npm install
@@ -51,6 +23,31 @@ npm install
 # Copy the service file
 echo "Copying the service file..."
 sudo cp chatgpt.service /etc/systemd/system/
+
+# Prompt user to input API key
+read -p "Enter API key: " api_key
+
+# Replace OPENAI_API_KEY in .env with user's input
+sed -i "s/OPENAI_API_KEY=''/OPENAI_API_KEY='$api_key'/g" .env
+
+# Prompt user to input bot name
+read -p "Enter bot name: " bot_name
+
+# Replace botName in config.js with user's input
+sed -i "s/export const botName = ''/export const botName = '$bot_name'/g" src/config.js
+
+# Prompt user to input room white list
+read -p "Enter room white list (format: 'A','B'): " room_white_list
+
+# Replace roomWhiteList in config.js with user's input
+sed -i "s/export const roomWhiteList = \[\]/export const roomWhiteList = \[$room_white_list\]/g" src/config.js
+
+# Prompt user to input alias white list
+read -p "Enter alias white list (format: 'A','B'): " alias_white_list
+
+# Replace aliasWhiteList in config.js with user's input
+sed -i "s/export const aliasWhiteList = \[\]/export const aliasWhiteList = \[$alias_white_list\]/g" src/config.js
+
 
 # Reload the system manager configuration
 sudo systemctl daemon-reload
