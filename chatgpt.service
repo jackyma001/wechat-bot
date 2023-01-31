@@ -1,0 +1,13 @@
+[Unit]
+Description=ChatGPT app
+
+[Service]
+ExecStart=node /wechat-bot/index.js
+Restart=always
+User=root
+Environment=PATH=/usr/bin:/usr/local/bin
+WorkingDirectory=/wechat-bot
+
+[Install]
+WantedBy=multi-user.target
+
