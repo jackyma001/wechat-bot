@@ -14,6 +14,8 @@ echo "Cloning the wechat-bot repository..."
 git clone https://github.com/jackyma001/wechat-bot.git
 cd wechat-bot
 
+cp .env.example .env
+
 # Ask the user for API key
 echo "Enter your API key:"
 read api_key
