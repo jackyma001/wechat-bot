@@ -79,8 +79,7 @@ $ docker build . -t wechat-bot
 
 $ docker run -d --rm --name wechat-bot -v $(pwd)/config.js:/app/config.js -v $(pwd)/.env:/app/.env wechat-bot
 ```
-##Ubuntu一键安装脚本
-'''sh
+## Ubuntu一键安装脚本
+```sh
 curl https://raw.githubusercontent.com/jackyma001/wechat-bot/master/install.sh | bash
-
-'''
+```
