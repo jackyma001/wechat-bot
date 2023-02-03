@@ -1,0 +1,45 @@
+name: Deploy Node.js App
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup SSH
+      uses: appleboy/ssh-action@master
+      with:
+        ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
+        known-hosts: github.com
+
+    - name: Copy code to server
+      uses: actions/upload-artifact@v2
+      with:
+        target-path: /home/ubuntu/node-app
+        artifact: .
+
+    - name: SSH into VPS
+      uses: appleboy/ssh-action@master
+      with:
+        ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
+        host: my-vps.com
+        username: ubuntu
+        commands: |
+          cd /home/ubuntu/node-app
+          npm install
+          pm2 restart app.js
+
+    - name: Cleanup artifacts
+      uses: actions/cleanup-artifacts@v2
+      with:
+        artifacts: node-app
