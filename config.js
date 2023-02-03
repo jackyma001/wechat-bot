@@ -8,4 +8,4 @@ export const botName = '助理'
 export const roomWhiteList = ['我们都是伏拉夫','奇迹暖暖家族']
 
 // 联系人白名单，白名单内的联系人才会自动回复
-export const aliasWhiteList = ['李冬雪']
+export const aliasWhiteList = ['冬瓜']
