@@ -10,15 +10,22 @@ const config = {
 const api = new ChatGPTAPI(config)
 
 // 获取 chatGPT 的回复
-export async function getChatGPTReply(content) {
+export async function getChatGPTReply(content, conversationId = null, id = null) {
   console.log('🚀🚀🚀 / content', content)
   // 调用chatgpt的接口
- const reply = await api.sendMessage(content, {
-   //  "chatgpt 请求超时！最好开下全局代理。"
-   timeoutms: 2 * 60 * 1000,
- })
+  let reply
+  if (!conversationId) {
+    reply = await api.sendMessage(content, {
+      timeoutms: 2 * 60 * 1000,
+    })
+  } else {
+    reply = await api.sendMessage(content, {
+      conversationId: conversationId,
+      parentMessageId: id,
+      timeoutms: 2 * 60 * 1000,
+    })
+  }
   console.log('🚀🚀🚀 / reply', reply)
   return reply
-
-  // // 如果你想要连续语境对话，可以使用下面的代码
 }
+

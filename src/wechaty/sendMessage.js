@@ -1,7 +1,8 @@
 import { getChatGPTReply as getReply } from '../chatgpt/index.js'
 //import { getOpenAiReply as getReply } from '../openai/index.js'
 import { botName, roomWhiteList, aliasWhiteList } from '../../config.js'
-
+let conversationId = '';
+let id = '';
 /**
  * 默认消息发送
  * @param msg
@@ -29,13 +30,15 @@ export async function defaultMessage(msg, bot) {
       if (isRoom && room) {
         if(isNewConversation)
         {
-          const reply = await getReply(content.replace(`${botName}`, ''))
+          conversationId = '';
+          id = '';
+          return;
         }
-        {
-          const reply = await getReply(content.replace(`${botName}`, ''))
-        }
+        const reply = await getReply(content.replace(`${botName}`, ''), conversationId, id)
+        conversationId = reply.conversationId;
+        id = reply.id;
         await room.say(reply.text)
-        return
+        return;
       }
       // 私人聊天，白名单内的直接发送
       if (isAlias && !room) {
