@@ -22,7 +22,7 @@ export async function defaultMessage(msg, bot) {
   const isRoom = roomWhiteList.includes(roomName) && content.includes(`${botName}`) // 是否在群聊白名单内并且艾特了机器人
   const isAlias = aliasWhiteList.includes(remarkName) || aliasWhiteList.includes(name) // 发消息的人是否在联系人白名单内
   const isBotSelf = botName === remarkName || botName === name // 是否是机器人自己
-  const isNewConversation = content.includes(`新话题`) && content.includes(`${botName}`)// 是否包含机器人 
+  const isNewConversation = content.includes(`新话题`)
   // TODO 你们可以根据自己的需求修改这里的逻辑
   if (isText && !isBotSelf) {
     try {
@@ -42,8 +42,17 @@ export async function defaultMessage(msg, bot) {
       }
       // 私人聊天，白名单内的直接发送
       if (isAlias && !room) {
-        const reply = await getReply(content.text)
-        await contact.say(reply.text)
+        if(isNewConversation)
+        {
+          conversationId = '';
+          id = '';
+          return;
+        }
+        const reply = await getReply(content, conversationId, id)
+        conversationId = reply.conversationId;
+        id = reply.id;
+        await room.say(reply.text)
+        return;
       }
     } catch (e) {
       console.error(e)
