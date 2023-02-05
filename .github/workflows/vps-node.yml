@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  SSH_PRIVATE_KEY: ${{ secrets.KEY }}
 
 jobs:
   deploy:
@@ -15,31 +15,25 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Setup SSH
-      uses: appleboy/ssh-action@master
+    - name: Package app with npm
+      run: |
+        npm install
+        npm run build
+    - name: Copy files to server
+      uses: appleboy/scp-action@main
       with:
-        ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
-        known-hosts: github.com
-
-    - name: Copy code to server
-      uses: actions/upload-artifact@v2
+        host: ${{secrets.HOST}}
+        username: ${{secrets.USERNAME}}
+        key: ${{ secrets.KEY }}
+        source: dist/
+        target: /wechat-bot
+    - name: Start app with PM2
+      uses: appleboy/ssh-action@main
       with:
-        target-path: /home/ubuntu/node-app
-        artifact: .
-
-    - name: SSH into VPS
-      uses: appleboy/ssh-action@master
-      with:
-        ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
-        host: my-vps.com
-        username: ubuntu
-        commands: |
-          cd /home/ubuntu/node-app
-          npm install
-          pm2 restart app.js
-
-    - name: Cleanup artifacts
-      uses: actions/cleanup-artifacts@v2
-      with:
-        artifacts: node-app
+        host: ${{secrets.HOST}}
+        username: ${{secrets.USERNAME}}
+        key: ${{ secrets.KEY }}
+        script: |
+          sudo -i
+          pm2 start index.js
+    
