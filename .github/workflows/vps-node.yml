@@ -17,6 +17,8 @@ jobs:
       uses: actions/checkout@v2
     - name: Package app with npm
       run: |
+        curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+        sudo apt-get install -y nodejs
         npm install
         npm run build
     - name: Copy files to server
