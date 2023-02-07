@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:lts-alpine
 ENV OPENAI_API_KEY=$OPENAI_API_KEY
 RUN mkdir -p /app
 WORKDIR /app
