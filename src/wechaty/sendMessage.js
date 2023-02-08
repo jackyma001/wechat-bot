@@ -51,7 +51,7 @@ export async function defaultMessage(msg, bot) {
         const reply = await getReply(content, conversationId, id)
         conversationId = reply.conversationId;
         id = reply.id;
-        await room.say(reply.text)
+        await contact.say(reply.text)
         return;
       }
     } catch (e) {
